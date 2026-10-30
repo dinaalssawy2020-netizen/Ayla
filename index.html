@@ -15,59 +15,69 @@ body{background:#0E0A14;min-height:100dvh;display:flex;flex-direction:column;ali
 .header{width:100%;text-align:center;padding:10px 20px;z-index:2}
 .header h1{color:#FFD60A;font-size:28px;font-weight:900;text-shadow:0 0 18px #FFD60A}
 .header p{color:#FFF2A8;font-size:12px;margin-top:2px;font-weight:800;opacity:.8}
-.heart-wrap{margin-top:10px;position:relative;width:280px;height:280px;display:flex;align-items:center;justify-content:center;z-index:2}
+.heart-wrap{margin-top:10px;position:relative;width:260px;height:260px;display:flex;align-items:center;justify-content:center;z-index:2}
 .heart{
-  width:170px;height:170px;background:#E11D2D;
+  width:135px;height:135px;
+  background:#4E0F13;
   position:relative;transform:rotate(-45deg);
-  animation:beat 1.1s infinite;
-  box-shadow:0 0 20px #E11D2D, 0 0 45px rgba(225,29,45,.6), 0 0 0 5px #FFD60A;
+  animation:none;
+  box-shadow:0 0 18px rgba(78,15,19,.7), 0 0 0 4px #FFD60A, 0 0 25px rgba(255,214,10,.3);
   cursor:pointer;
+  transition:transform .1s ease;
 }
+.heart:active{transform:rotate(-45deg) scale(0.94)}
 .heart::before,.heart::after{
-  content:"";width:170px;height:170px;background:#E11D2D;border-radius:50%;position:absolute;
-  box-shadow:0 0 20px #E11D2D;
+  content:"";width:135px;height:135px;background:#4E0F13;border-radius:50%;position:absolute;
 }
-.heart::before{top:-85px;left:0}
-.heart::after{left:85px;top:0}
-@keyframes beat{0%,100%{transform:rotate(-45deg) scale(1)}50%{transform:rotate(-45deg) scale(1.18)}}
-.heart-text{position:absolute;z-index:3;transform:rotate(45deg);color:#FFD60A;font-weight:900;font-size:26px;text-align:center;top:28%;left:10%;width:80%;line-height:1.1}
-.heart-text span{font-size:28px;display:block;filter:drop-shadow(0 0 8px #FFD60A)}
-.counter{margin-top:8px;background:rgba(255,214,10,.14);border:2px solid #FFD60A;border-radius:18px;padding:9px 18px;color:#FFD60A;font-weight:900;font-size:14px;box-shadow:0 0 16px rgba(255,214,10,.4);z-index:2}
+.heart::before{top:-67px;left:0}
+.heart::after{left:67px;top:0}
+.heart-text{position:absolute;z-index:3;transform:rotate(45deg);color:#FFD60A;font-weight:900;font-size:22px;text-align:center;top:30%;left:12%;width:76%;line-height:1.1}
+.heart-text span{
+  font-size:30px;display:block;margin-top:2px;
+  animation:smallBeat 1.1s infinite;
+  filter:drop-shadow(0 0 10px #FFD60A);
+}
+@keyframes smallBeat{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
+.counter{margin-top:12px;background:rgba(255,214,10,.14);border:2px solid #FFD60A;border-radius:18px;padding:9px 18px;color:#FFD60A;font-weight:900;font-size:14px;box-shadow:0 0 16px rgba(255,214,10,.4);z-index:2}
 .cards{width:90%;max-width:420px;margin:16px auto 0;z-index:2}
 .card{background:rgba(255,255,255,.06);border:2px solid rgba(255,214,10,.45);border-radius:20px;padding:12px;margin-bottom:10px;text-align:center}
 .card p{color:#FFEC99;font-weight:800;font-size:14px}
 .btn{background:#FFD60A;color:#4E0F13;border:none;border-radius:14px;padding:10px 18px;font-weight:900;cursor:pointer;margin:4px;box-shadow:0 0 12px rgba(255,214,10,.6)}
 .btn.dark{background:#4E0F13;color:#FFD60A;border:2px solid #FFD60A}
 .floating{position:fixed;bottom:0;font-size:20px;animation:floatUp 3s forwards;pointer-events:none;z-index:10}
-@keyframes floatUp{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-90vh);opacity:0}}
+@keyframes floatUp{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-90vh) scale(1.4);opacity:0}}
 </style>
 </head>
 <body>
-<div class="stars" id="stars"></div><div class="moon">🌙</div>
+<div class="stars" id="stars"></div>
+<div class="moon">🌙</div>
 <div class="header"><h1>قلب إيلا  🌙</h1><p>منور زي القمر - دوسي عليه </p></div>
+
 <div class="heart-wrap" onclick="love()">
   <div class="heart">
     <div class="heart-text">إيلا<br><span>💛</span></div>
   </div>
 </div>
+
 <div class="counter">✨ <span id="num">0</span> بحبك يا إيلا</div>
+
 <div class="cards">
-<div class="card"><p id="msg">إيلا حلم حلو بليل 🌙</p></div>
+<div class="card"><p id="msg">إيلا حلم حلو  🌙</p></div>
 <div class="card">
-<button class="btn" onclick="love()">❤️ نوري قلب إيلا</button>
+<button class="btn" onclick="love()">💛 نوري قلب إيلا</button>
 <button class="btn dark" onclick="changeMsg()">🌙 رسالة بليل</button>
 </div>
 </div>
+
 <script>
-// نجوم
 let s=document.getElementById('stars');
 for(let i=0;i<70;i++){let d=document.createElement('div');d.className='star';d.style.left=Math.random()*100+'vw';d.style.top=Math.random()*100+'vh';d.style.animationDelay=Math.random()*2+'s';s.appendChild(d);}
+
 let n=parseInt(localStorage.getItem('aylaNight')||0);
-let msgs=["إيلا قمر بليل 🌙💛","إيلا بتنور أوضتها زي النجمة ⭐","تصبحي على خير يا إيلا  😴💛","حضن إيلا بيدفي بليل 🤗","نجمة إيلا منورة السما كلها ✨","إيلا حلم حلو بليل 🌙","مامي و بابا بيحبوا إيلا قد النجوم كلها ❤️"];
+let msgs=["إيلا قمر بليل 🌙💛","إيلا بتنور أوضتها زي النجمة ⭐","تصبحي على خير يا إيلا يا قمر 😴💛","حضن إيلا بيدفي بليل 🤗","نجمة إيلا منورة السما كلها ✨","إيلا حلم حلو بليل 🌙","مامي وبابا بيحبوا إيلا قد النجوم كلها ❤️"];
 let i=0;
 document.getElementById('num').innerText=n;
 
-// صوت كليك آيفون
 let audioCtx;
 function iphoneClick(){
   try{
@@ -79,7 +89,6 @@ function iphoneClick(){
     o.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime+0.08);
     g.gain.setValueAtTime(0.35, audioCtx.currentTime);
     g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime+0.12);
-    // فلتر يدي تكة الآيفون
     let f=audioCtx.createBiquadFilter();
     f.type='highpass'; f.frequency.value=800;
     o.connect(f); f.connect(g); g.connect(audioCtx.destination);
@@ -91,8 +100,9 @@ function love(){
  n++;localStorage.setItem('aylaNight',n);document.getElementById('num').innerText=n;
  iphoneClick();
  if(navigator.vibrate) navigator.vibrate(20);
- let e=document.createElement('div');e.className='floating';e.innerText=['❤️','💛','🌙','⭐'][Math.floor(Math.random()*4)];e.style.left=Math.random()*80+10+'vw';e.style.bottom='10px';document.body.appendChild(e);setTimeout(()=>e.remove(),3000);
+ let e=document.createElement('div');e.className='floating';e.innerText=['💛','🌙','⭐','✨','❤️'][Math.floor(Math.random()*5)];e.style.left=Math.random()*80+10+'vw';e.style.bottom='10px';document.body.appendChild(e);setTimeout(()=>e.remove(),3000);
 }
+
 function changeMsg(){i=(i+1)%msgs.length;document.getElementById('msg').innerText=msgs[i];love();}
 </script>
 </body>
