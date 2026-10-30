@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>قلب إيلا 🌙</title>
-<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#4E0F13">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<link id="manifestLink" rel="manifest" href="">
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@800;900&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Tajawal',sans-serif}
@@ -35,28 +35,32 @@ body{background:#0E0A14;min-height:100dvh;display:flex;flex-direction:column;ali
 .btn.dark{background:#4E0F13;color:#FFD60A;border:2px solid #FFD60A}
 .floating{position:fixed;bottom:0;font-size:20px;animation:floatUp 3s forwards;pointer-events:none;z-index:10}
 @keyframes floatUp{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-90vh) scale(1.4);opacity:0}}
-.install{background:#fff;color:#4E0F13;border-radius:20px;padding:12px 16px;margin-top:14px;font-weight:900;display:none;z-index:5;box-shadow:0 0 15px #FFD60A}
+.install{background:#fff;color:#4E0F13;border-radius:20px;padding:12px 16px;margin-top:14px;font-weight:900;display:none;z-index:5;box-shadow:0 0 15px #FFD60A;border:none;cursor:pointer}
 </style>
 </head>
 <body>
 <div class="stars" id="stars"></div><div class="moon">🌙</div>
-<div class="header"><h1>قلب إيلا  🌙</h1><p>منور زي القمر - دوسي عليه </p></div>
+<div class="header"><h1>قلب إيلا  🌙</h1><p>منور زي القمر - دوسي عليه بليل</p></div>
 <div class="heart-wrap" onclick="love()"><div class="heart"><div class="heart-text">إيلا<br><span>💛</span></div></div></div>
 <div class="counter">✨ <span id="num">0</span> بحبك يا إيلا</div>
 <div class="cards">
-<div class="card"><p id="msg">إيلا حلم حلو  🌙</p></div>
+<div class="card"><p id="msg">إيلا حلم حلو بليل 🌙</p></div>
 <div class="card">
 <button class="btn" onclick="love()">💛 نوري قلب إيلا</button>
 <button class="btn dark" onclick="changeMsg()">🌙 رسالة بليل</button>
 </div>
 </div>
 <button class="install" id="installBtn">📲 ثبتي برنامج إيلا</button>
+
 <script>
+// نجوم
 let s=document.getElementById('stars');
 for(let i=0;i<70;i++){let d=document.createElement('div');d.className='star';d.style.left=Math.random()*100+'vw';d.style.top=Math.random()*100+'vh';d.style.animationDelay=Math.random()*2+'s';s.appendChild(d);}
+
 let n=parseInt(localStorage.getItem('aylaNight')||0);
 let msgs=["إيلا قمر بليل 🌙💛","إيلا بتنور أوضتها زي النجمة ⭐","تصبحي على خير يا إيلا يا روحي 😴💛","حضن إيلا بيدفي بليل 🤗","نجمة إيلا منورة السما كلها ✨","إيلا حلم حلو بليل 🌙","مامي وبابا بيحبوا إيلا قد النجوم كلها ❤️"];
 let i=0;document.getElementById('num').innerText=n;
+
 let audioCtx;
 function iphoneClick(){
   try{
@@ -74,11 +78,29 @@ function love(){
  let e=document.createElement('div');e.className='floating';e.innerText=['💛','🌙','⭐','✨','❤️'][Math.floor(Math.random()*5)];e.style.left=Math.random()*80+10+'vw';e.style.bottom='10px';document.body.appendChild(e);setTimeout(()=>e.remove(),3000);
 }
 function changeMsg(){i=(i+1)%msgs.length;document.getElementById('msg').innerText=msgs[i];love();}
-// PWA install
+
+// --- هنا التعديل اللي بيخليه برنامج من ملف واحد بس ---
+const manifest = {
+  name: "قلب إيلا بليل 🌙",
+  short_name: "إيلا",
+  start_url: ".",
+  display: "standalone",
+  background_color: "#0E0A14",
+  theme_color: "#4E0F13",
+  icons: [{src:"https://cdn-icons-png.flaticon.com/512/833/833472.png",sizes:"512x512",type:"image/png"}]
+};
+const manifestBlob = new Blob([JSON.stringify(manifest)], {type:'application/json'});
+document.getElementById('manifestLink').href = URL.createObjectURL(manifestBlob);
+
+const swCode = `self.addEventListener('install', e => self.skipWaiting()); self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(()=>caches.match(e.request))))`;
+if('serviceWorker' in navigator){
+  const swBlob = new Blob([swCode], {type:'text/javascript'});
+  navigator.serviceWorker.register(URL.createObjectURL(swBlob));
+}
+
 let deferredPrompt;let btn=document.getElementById('installBtn');
 window.addEventListener('beforeinstallprompt',(e)=>{e.preventDefault();deferredPrompt=e;btn.style.display='block';});
 btn.addEventListener('click',async()=>{if(deferredPrompt){deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;btn.style.display='none';}});
-if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js');}
 </script>
 </body>
 </html>
