@@ -45,7 +45,7 @@ h1{margin:75px 0 0;font-size:32px;color:#ffcc33;font-weight:800}
 <div class="card">❤️ مامي وبابا بيحبوا إيلا قد النجوم كلها</div>
 
 <div class="bottom">
-<button class="baba-btn" onclick="showMsg('baba')">بابا بعتلك رسالة</button>
+<button class="light-btn" onclick="showMsg('light')">بابا بعتلك رسالة</button>
 <button class="light-btn" onclick="showMsg('light')">💛 نوري قلب إيلا</button>
 </div>
 
@@ -60,10 +60,7 @@ for(let i=0;i<60;i++){let s=document.createElement('div');s.className='star';s.s
 function fly(n){
  for(let i=0;i<n;i++){
   let d=document.createElement('div');d.className='fly';
-  d.innerText=['💛','❤️'][Math.floor(Math.random()*2)];
-  d.style.left=Math.random()*90+'%';
-  document.body.appendChild(d);
-  setTimeout(()=>d.remove(),2500)
+  d.innerText=['💛','❤️','⭐','🌙'][Math.floor(Math.random()*4)];
  }
 }
 function love(){c++;document.getElementById('cnt').innerText=c;fly(12)}
